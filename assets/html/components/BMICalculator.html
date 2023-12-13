@@ -1,0 +1,117 @@
+<script>
+    window.BMICalculatorData = function () {
+        return {
+            heightValue: "",
+            weightValue: "",
+            showResults: false,
+            isSuccessfulResults: false,
+            resultMessage: "",
+            calculateBMI() {
+                this.showResults = true;
+
+                if (this.heightValue === "" || this.weightValue === "") {
+                    this.isSuccessfulResults = false;
+                    this.resultMessage = "All inputs need to have values!";
+                    return;
+                }
+
+                let heightParsed = parseInt(this.heightValue);
+                let widthParsed = parseInt(this.weightValue);
+
+                if (isNaN(heightParsed) || isNaN(widthParsed)) {
+                    this.isSuccessfulResults = false;
+                    this.resultMessage =
+                        "Width and Height inputs only takes in numbers!";
+                    return;
+                }
+                let heightInMeters = heightParsed / 100;
+                let bmi = (widthParsed / Math.pow(heightInMeters, 2)).toFixed(
+                    2
+                );
+
+                this.isSuccessfulResults = true;
+                this.resultMessage = `BMI is: <br>${bmi}<br>${this.overweightStatus(
+                    bmi
+                )}`;
+            },
+            reset() {
+                this.resultMessage = "";
+                this.showResults = false;
+                this.heightValue = "";
+                this.weightValue = "";
+            },
+            overweightStatus(bmi) {
+                let output = "";
+
+                if (bmi < 18.5) {
+                    output = "Underweight";
+                } else if (bmi > 18.4 && bmi < 25) {
+                    output = "Normal weight";
+                } else if (bmi > 24.9 && bmi < 30) {
+                    output = "Overweight";
+                } else {
+                    output = "Obese";
+                }
+
+                return output;
+            },
+        };
+    };
+</script>
+<div
+    x-data="BMICalculatorData();"
+    x-init=""
+    class="flex flex-col gap-3 items-center"
+>
+    <div
+        class="p-3 w-72 bg-gradient-to-br from-blue-400 to-blue-700 text-white rounded-md flex flex-col gap-3"
+    >
+        <h3 class="text-xl text-center font-bold">BMI Calculator</h3>
+        <form action="" class="flex flex-col gap-3">
+            <div class="flex flex-col gap-3">
+                <label for="height">Height(in cm)</label>
+                <input
+                    type="text"
+                    name="height"
+                    id="height"
+                    placeholder="Height . . ."
+                    class="w-full h-full p-2 border-2 rounded-md focus:ring-purple-500 focus:ring focus:ring-offset-2 focus:ring-offset-purple-500 text-black"
+                    x-model="heightValue"
+                />
+            </div>
+            <div class="flex flex-col gap-3">
+                <label for="weight">Weight(in Kg)</label>
+                <input
+                    type="text"
+                    name="weight"
+                    id="weight"
+                    placeholder="Weight . . ."
+                    class="w-full h-full p-2 border-2 rounded-md focus:ring-purple-500 focus:ring focus:ring-offset-2 focus:ring-offset-purple-500 text-black"
+                    x-model="weightValue"
+                />
+            </div>
+        </form>
+        <button
+            type="button"
+            class="text-blue-500 font-bold bg-gradient-to-br from-gray-50 to-gray-200 hover:from-purple-200 hover:to-purple-400 hover:text-white rounded"
+            @click="calculateBMI();"
+        >
+            <div class="hover:scale-110 px-4 py-1" x-text="'Calculate'"></div>
+        </button>
+        <div
+            class="p-3 text-center text-white font-bold bg-gradient-to-br rounded-lg shadow-lg"
+            :class="{'from-green-500 to-green-700': isSuccessfulResults, 
+                'from-red-500 to-red-700': !isSuccessfulResults}"
+            x-show="showResults"
+            x-html="resultMessage"
+        ></div>
+        <button
+            x-show="showResults"
+            type="button"
+            class="text-blue-500 font-bold bg-gradient-to-br from-gray-50 to-gray-200 hover:from-purple-200 hover:to-purple-400 hover:text-white rounded"
+            @click="reset();"
+        >
+            <div class="hover:scale-110 px-4 py-1" x-text="'Reset'"></div>
+        </button>
+    </div>
+</div>
