@@ -1,6 +1,6 @@
 ## Access Project Online
 
-This is BIT course task is about creating BMI Calculator component. This project was created by using Alpine js and tailwindcss.
+This is BIT course task about creating BMI Calculator component. This project was created by using Alpine js and tailwindcss.
 
 -   [View](https://gymmed.github.io/BIT-Alpine-BMI-Calculator-Component/)!
 
